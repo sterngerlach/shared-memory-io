@@ -262,12 +262,11 @@ void DataPublisher<DataType, ResultType>::Stop()
 {
     /* Stop publisher */
     pthread_mutex_lock(&this->mpShared->mMutex);
+    
+    /* Publisher is now inactive */
     this->mpShared->mPublisherActive = false;
-    pthread_mutex_unlock(&this->mpShared->mMutex);
 
     pthread_cond_signal(&this->mpShared->mCondPublisherReady);
-
-    pthread_mutex_lock(&this->mpShared->mMutex);
 
     /* Wait for subscriber to stop */
     while (this->mpShared->mSubscriberActive)
