@@ -76,7 +76,6 @@ int main(int argc, char** argv)
 
             /* データの処理完了をサーバに通知 */
             pthread_cond_signal(&shared_data_ptr->client_processed);
-            pthread_mutex_unlock(&shared_data_ptr->mutex);
         } else {
             /* 終了が通知されたらループを抜ける */
             std::cerr << "Consumer: exiting" << std::endl;
@@ -85,8 +84,6 @@ int main(int argc, char** argv)
             pthread_mutex_unlock(&shared_data_ptr->mutex);
             break;
         }
-
-        pthread_mutex_lock(&shared_data_ptr->mutex);
 
         /* サーバのデータ確認待ち */
         while (shared_data_ptr->flag != State::ServerReceived)
